@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string("title");
             $table->string('image');
-            $table->string('deskripsi');
+            $table->text('deskripsi');    
             $table->string('kategori')->nullable();
             $table->string('harga');
             $table->foreignId("creator_id")->references("id")->on("users")->cascadeOnDelete();
             $table->timestamps();
-        });
+        }); 
     }
+    
 
     
 

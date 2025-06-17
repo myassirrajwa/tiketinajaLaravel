@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('storage/css/post/update.css') }}">
-<form action="{{ route('post.store') }}" method="POST">
+<form action="{{ route('admin.store') }}" method="POST">
   @csrf
   <div>
     <label for="title">Judul</label><br>

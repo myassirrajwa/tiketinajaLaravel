@@ -24,7 +24,7 @@ class RegistrasiController extends Controller
 
         Auth::login($user);
 
-        $request->user()->sendEmailVerificationNotification();
+        // $request->user()->sendEmailVerificationNotification();
         return redirect()->route('home')->with('succes','register succes');
     }
 }

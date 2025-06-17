@@ -13,8 +13,13 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\RegistrasiController;
+use App\Http\Middleware\AdminOnly;
+use App\Models\checkOut;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Event;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,21 +43,32 @@ Route::get('/registrasi', [registrasiController::class, 'index'])->name('registr
 Route::post('/registrasi', [RegistrasiController::class, 'store']);
 
 
-Route::middleware([])->group(function(){
+Route::middleware(["auth"])->group(function(){
     Route::get('admin',function(){
-        $user = auth()->user(); 
-        return view('auth.admin',compact('user'));
-    })->name('admin')->middleware('auth');
+        
+        return redirect(route("admin"));
+    });
     Route::resource('post',postController::class);
-    
-    Route::get('/pamerkan',[EventController::class, 'index'])->name('event');
-    Route::post('/pamerkan',[EventController::class, 'store'])->name('event.store');
-    
     Route::get('/home', [LandingController::class, 'index'])->name('home');
     Route::post('/home', [LandingController::class, 'store']);
-    Route::get('/show/{slug}', [showController::class, 'show'])->name('auth.show');
-    
-    Route::get('/admin',[AdminController::class,'index'])->name('admin');
+
+    Route::get('/checkout/{id}', [CheckoutController::class, 'showCheckoutForm'])->name('checkout.form');
+    Route::post('/checkout/{event}', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkOut');
+    Route::get('/checkout/qrcode/{id}', [CheckoutController::class, 'showQrCode'])->name('checkout.qrcode');
+
+    Route::get('/admin', [AdminController::class, 'index'])->middleware(["auth", AdminOnly::class])->name('admin');
+    Route::get('/admin/event', [AdminController::class, 'event_index'])->name('admin.event');
+    Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
+    Route::post('/admin/create', [AdminController::class, 'store'])->name('admin.add');
+    Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+    Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
+    Route::put('/admin/update/{id}', [AdminController::class, 'update'])->name('admin.update');
+
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');   
 });
 Route::post('logout',[LoginController::class,'destroy'])->name('logout')->middleware("auth");
 

@@ -3,6 +3,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+     <link rel="icon" href="/storage/image/title.png" type="image/png">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="{{ asset('storage/css/admin/admin.css') }}">
 </head>
@@ -12,31 +13,24 @@
         <div class="sidebar">
             <h2>Admin Panel</h2>
             <a href="#">Dashboard</a>
-            <a href="#">Kelola Pengguna</a>
-            <a href="#">Acara & Tiket</a>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" style="color: #e74c3c; margin-top: 10px;">Logout</button>
-            </form>
+            <a href="{{route('admin.event')}}">Acara & Tiket</a>
+            <a href="{{ route('home') }}" class="btn-bottom-left">
+    Back to Home
+</a>
         </div>
 
         <!-- Main Content -->
         <div class="main">
-            <h1>Selamat Datang, Admin!</h1>
+            <h1>Selamat Datang,{{$user->name}}</h1>
 
             <div class="card">
                 <h3>Total Pengguna</h3>
-                <p>152</p>
+                <p>{{$totalUser}}</p>
             </div>
 
             <div class="card">
-                <h3>Total Acara</h3>
-                <p>34</p>
-            </div>
-
-            <div class="card">
-                <h3>Tiket Terjual</h3>
-                <p>879</p>
+                <h3>Total Event</h3>
+                <p>{{$totalEvent}}</p>
             </div>
         </div>
     </div>

@@ -45,11 +45,6 @@ class DatabaseSeeder extends Seeder
             "harga"=>100000,
             "creator_id" => 1
         ]);
-        Event::create([
-        'title' => 'Konser Musik Indie Lokal',
-        'slug' => 'konser-musik-indie-lokal',
-        'category' => 'musik',
-]);
 
     }
 }

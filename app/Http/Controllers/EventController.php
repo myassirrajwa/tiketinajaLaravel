@@ -11,7 +11,7 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::all();
-       return view('dasboard.event.index',compact('events'));
+       return view('event.index',compact('events'));
     }
     public function create()
     {
@@ -22,7 +22,6 @@ class EventController extends Controller
             'title' =>"required",
             'deskripsi' => "required",
             'harga'=>"numeric|required",
-            'kategori'=>"required | in:musik,seni,olahraga,film,wisata",
             'image'=> "nullable|image|mimes:png,jpg",
         ]);
         $imagepath = "image/Komodo.jpg";

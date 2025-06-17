@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/storage/image/title.png" type="image/png">
   <title>TiketinAja - Pesan Tiket Event Anda</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('/storage/css/landing_page.css')}}">
@@ -12,9 +13,14 @@
   <header>
     <h1>TiketinAja</h1>
     <nav>
+      @auth  
+      <a href="#search">Cari Tiket</a>
+      <a href="#events">Event</a>
+      @else
       <a href="#search">Cari Tiket</a>
       <a href="#events">Event</a>
       <a href="#cta">Daftar</a>
+      @endauth
     </nav>
    @auth
     <div class="user-section">
@@ -22,9 +28,11 @@
         $user = Auth::user();
         $initial = strtoupper(substr($user ->name,0,1));
     @endphp
-    <div class="avatar">
+    <a href="{{ route('profile.show') }}" class="user-profile">
+      <div class="avatar">
       {{ $initial }}
     </div>
+    </a>
       <form action="{{ route('logout') }}" method="POST">
         @csrf
         <button type="submit" class="login-btn">Logout</button>
@@ -39,10 +47,10 @@
   <section class="hero">
     <div>
       @auth
-      <h2>Hallo {{$user->name}} pamerkan tiket mu!</h2>
-      <a href="{{route('event.store')}}" class="cta-btn">pamerkan !</a>
+      <h2> {{$user->name}} letss goo beli tiket</h2>
+      <a href="#search" class="cta-btn">Cari Tiket</a>
         @else
-      <h2>Pamerkan tiket yang ingin dijual</h2>
+      <h2>Happy Holiday.....</h2>
       <a href="#search" class="cta-btn">Cari Tiket</a>
       @endauth
     </div>
@@ -51,32 +59,22 @@
   <!-- Search Section -->
   <section id="search" class="search-section">
     <input type="text" placeholder="Cari acara, konser, atau destinasi..." />
-    <select>
-      @foreach(['musik', 'seni', 'olahraga', 'film','wisata'] as $kategori)
-              <option value="{{$kategori}}">
-                <a href="{{ route('home', ['kategori' => $kategori]) }}"
-                   class="block bg-indigo-100 text-indigo-700 text-center py-6 rounded-xl shadow-sm hover:shadow-md capitalize transition">
-                    {{ $kategori }}
-                </a>
-              </option>
-      @endforeach
-    </select>
     <button>Cari</button>
   </section>
 
   <!-- Featured Events Section -->
   <section id="events" class="featured-events  block">  
-  @foreach ($events as $event )
+    @foreach ($events as $event )
     <div class="event-card">
-  <img src="{{ asset("/storage/" . $event->image)}}" alt="{{ $event->title }}" />
-  <div class="info">
-    <h3>{{ $event->title }}</h3>
-    <p>{{ $event->deskripsi }}</p>
-    <p>IDR {{ number_format($event->harga, 0, ',', '.') }}</p>
-    <a href="{{ route('auth.show', $show->slug) }}" class="btn-beli">BELI</a>
-  </div>
-</div>
+    <a href="{{ route('checkOut', ['event' => $event->id]) }}" >
+      <img src="{{ asset("/storage/" . $event->image)}}" alt="Event 1" />
+      <div class="info">
+        <h3>{{$event->title}}</h3>
+        <p>{{$event->deskripsi}}</p>
+        <p class="price">IDR {{ number_format($event->harga, 0, ',', '.') }}</p>
+        </a>
 
+      </div>
     </div>
     @endforeach
     
